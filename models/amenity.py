@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Class Amenity -> Features"""
 
-from models.base_model import BaseModel
+from .base_model import BaseModel
 
 
 class Amenity(BaseModel):

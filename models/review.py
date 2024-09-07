@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Review -> user Reviews on the BnB"""
 
-from models.base_model import BaseModel
+from .base_model import BaseModel
 
 
 class Review(BaseModel):

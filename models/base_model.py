@@ -2,6 +2,7 @@
 import datetime as dt
 from typing import Any
 from uuid import uuid4
+from .engines import storage
 """ The Base Model Class -> Super Class to other storage classes
 """
 
@@ -19,6 +20,7 @@ class BaseModel:
             self.id = str(uuid4())
             self.created_at = dt.datetime.now()
             self.updated_at = self.created_at
+            storage.new(self)
     
 
     def __setattr__(self, name: str, value: Any) -> None:
@@ -33,6 +35,7 @@ class BaseModel:
     def save(self):
         """ Save Operation"""
         self.updated_at = dt.datetime.now()
+        storage.save()
 
     def to_dict(self) -> dict:
         """ Dictionary Representation of the Class"""

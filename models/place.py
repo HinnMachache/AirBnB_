@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ Class Place -> Exact Place where BnB is at
 """
-from models.base_model import BaseModel
+from .base_model import BaseModel
 
 
 class Place(BaseModel):
