@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 import json
-
+import os
 
 class FileStorage:
     """ Serializes Instances to a JSON file and
     deserialized JSON file to instances
     """
-    __file_path = ""
+    __file_path = "file.json"
     __objects = {}
 
     def all(self) -> dict:
@@ -27,10 +27,12 @@ class FileStorage:
         """
         # convert an instance to Python built in serializable data structure (list, dict, number and string)
         # convert this data structure to a string (JSON format, but it can be YAML, XML, CSV…) - for us it will be a my_string = JSON.dumps(my_dict)
-        save_objects = json.dumps(FileStorage.__objects)
+        save_objects = {}
+        for key, obj in FileStorage.__objects.items():
+            save_objects[key] = obj.to_dict()
         # write this string to a file on disk
         with open(FileStorage.__file_path, 'w') as file:
-            file.write(save_objects)
+            json.dump(save_objects, file) # Serializes and writes to file
         
 
 
@@ -39,13 +41,10 @@ class FileStorage:
         (only if the JSON file (__file_path) exists; 
         otherwise, do nothing."""
         # read a string from a file on disk
-        try:
+        from models.base_model import BaseModel
+        
+        if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, 'r') as file:
-                reload_objects = file.read()
-            # convert this string to a data structure.
-            FileStorage.__objects = json.loads(reload_objects)
-            # convert this data structure to instance
-            raise FileNotFoundError
-        except FileNotFoundError:
-            print("File Specified not found. Please check filename and try again")
+                for key, obj in json.load(file).items():    # Convert to str, Create a dict object
+                    self.new(BaseModel(**obj))
 
