@@ -42,9 +42,21 @@ class FileStorage:
         otherwise, do nothing."""
         # read a string from a file on disk
         from models.base_model import BaseModel
+        from models.amenity import Amenity
+        from models.city import City
+        from models.place import Place
+        from models.review import Review
+        from models.state import State
+        from models.user import User
+
+        models = {'BaseModel': BaseModel, 'Amenity': Amenity, 'City': City, 'Place': Place,
+                  'Review': Review, 'State': State, 'User': User}
         
         if os.path.exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, 'r') as file:
                 for key, obj in json.load(file).items():    # Convert to str, Create a dict object
-                    self.new(BaseModel(**obj))
+                    key = key.split('.')
+                    for tag, data in models.items():
+                        if key[0] == tag:
+                            self.new(data(**obj))
 
